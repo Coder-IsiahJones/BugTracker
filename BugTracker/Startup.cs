@@ -33,6 +33,8 @@ namespace BugTracker
                 .AddDefaultTokenProviders();
 
             services.AddScoped<IRolesService, RolesService>();
+            services.AddScoped<ICompanyInfoService, CompanyInfoService>();
+
             services.AddControllersWithViews();
         }
 
