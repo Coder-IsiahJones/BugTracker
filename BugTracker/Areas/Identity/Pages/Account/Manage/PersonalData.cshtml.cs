@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using BugTracker.Models;
+﻿using BugTracker.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace BugTracker.Areas.Identity.Pages.Account.Manage
 {
