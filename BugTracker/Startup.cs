@@ -1,5 +1,6 @@
 using BugTracker.Data;
 using BugTracker.Models;
+using BugTracker.Services;
 using BugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +36,7 @@ namespace BugTracker
             services.AddScoped<IRolesService, RolesService>();
             services.AddScoped<ICompanyInfoService, CompanyInfoService>();
             services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<ITicketService, TicketService>();
 
             services.AddControllersWithViews();
         }
