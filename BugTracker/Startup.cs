@@ -34,6 +34,7 @@ namespace BugTracker
 
             services.AddScoped<IRolesService, RolesService>();
             services.AddScoped<ICompanyInfoService, CompanyInfoService>();
+            services.AddScoped<IProjectService, ProjectService>();
 
             services.AddControllersWithViews();
         }
