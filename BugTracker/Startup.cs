@@ -39,6 +39,7 @@ namespace BugTracker
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<ITicketHistoryService, TicketHistoryService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             services.AddScoped<IEmailSender, EmailService>();
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
