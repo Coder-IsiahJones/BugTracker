@@ -1,4 +1,4 @@
-﻿namespace BugTracker.Models.Enums
+﻿namespace BugTracker.Enums
 {
     public enum Roles
     {

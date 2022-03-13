@@ -20,7 +20,6 @@ namespace BugTracker.Services
             }
             catch (System.Exception)
             {
-
                 throw;
             }
         }
@@ -40,7 +39,6 @@ namespace BugTracker.Services
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

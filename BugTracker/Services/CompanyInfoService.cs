@@ -49,7 +49,7 @@ namespace BugTracker.Services.Interfaces
                                                 .ThenInclude(x => x.TicketType)
                                             .Include(x => x.ProjectPriority)
                                             .ToListAsync();
-            
+
             return result;
         }
 

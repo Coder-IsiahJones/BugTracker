@@ -35,12 +35,12 @@ namespace BugTracker
                 .AddDefaultTokenProviders();
 
             services.AddScoped<ICompanyInfoService, CompanyInfoService>();
-            services.AddScoped<IFileService, FileService>();services.AddScoped<IEmailSender, EmailService>();
+            services.AddScoped<IFileService, FileService>(); services.AddScoped<IEmailSender, EmailService>();
             services.AddScoped<IInviteService, InviteService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IRolesService, RolesService>();
-            services.AddScoped<ITicketHistoryService, TicketHistoryService>(); 
+            services.AddScoped<ITicketHistoryService, TicketHistoryService>();
             services.AddScoped<ITicketService, TicketService>();
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));

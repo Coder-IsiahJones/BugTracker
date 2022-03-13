@@ -1,6 +1,6 @@
 ﻿using BugTracker.Data;
+using BugTracker.Enums;
 using BugTracker.Models;
-using BugTracker.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

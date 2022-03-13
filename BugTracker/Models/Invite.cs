@@ -34,7 +34,6 @@ namespace BugTracker.Models
         [DisplayName("Invitee First Name")]
         public string InviteeFirstName { get; set; }
 
-
         [DisplayName("Invitee Last Name")]
         public string InviteeLastName { get; set; }
 

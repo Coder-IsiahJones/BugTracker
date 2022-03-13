@@ -1,11 +1,14 @@
 ﻿using BugTracker.Data;
+using BugTracker.Enums;
 using BugTracker.Models;
-using BugTracker.Models.Enums;
 using BugTracker.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TicketPriority = BugTracker.Models.TicketPriority;
+using TicketStatus = BugTracker.Models.TicketStatus;
+using TicketType = BugTracker.Models.TicketType;
 
 namespace BugTracker.Services
 {

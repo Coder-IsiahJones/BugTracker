@@ -9,6 +9,7 @@ namespace BugTracker.Services.Interfaces
         public Task<bool> IsUserInRoleAsync(User user, string roleName);
 
         public Task<IEnumerable<string>> GetUserRolesAsync(User user);
+
         public Task<bool> AddUserToRoleAsync(User user, string roleName);
 
         public Task<bool> RemoveUserFromRoleAsync(User user, string roleName);

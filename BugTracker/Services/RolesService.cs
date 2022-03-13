@@ -37,7 +37,7 @@ namespace BugTracker.Services.Interfaces
 
         public async Task<IEnumerable<string>> GetUserRolesAsync(User user)
         {
-           IEnumerable<string> result = await _userManager.GetRolesAsync(user);
+            IEnumerable<string> result = await _userManager.GetRolesAsync(user);
 
             return result;
         }

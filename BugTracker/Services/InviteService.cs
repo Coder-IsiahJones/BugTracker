@@ -1,10 +1,10 @@
 ﻿using BugTracker.Data;
 using BugTracker.Models;
 using BugTracker.Services.Interfaces;
-using System;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BugTracker.Services
 {
@@ -37,7 +37,6 @@ namespace BugTracker.Services
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -51,7 +50,6 @@ namespace BugTracker.Services
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -65,7 +63,6 @@ namespace BugTracker.Services
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -84,7 +81,6 @@ namespace BugTracker.Services
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -103,7 +99,6 @@ namespace BugTracker.Services
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

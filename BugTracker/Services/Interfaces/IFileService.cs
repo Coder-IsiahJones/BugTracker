@@ -12,6 +12,5 @@ namespace BugTracker.Services.Interfaces
         public string GetFileIcon(string file);
 
         public string FormatFileSize(long bytes);
-
     }
 }

@@ -41,7 +41,6 @@ namespace BugTracker.Services
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
             }
@@ -156,7 +155,6 @@ namespace BugTracker.Services
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
             }
@@ -181,11 +179,9 @@ namespace BugTracker.Services
                                                              .ToList();
 
                 return ticketHistories;
-                                                                
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -204,11 +200,9 @@ namespace BugTracker.Services
                                                                    .ToList();
 
                 return ticketHistory;
-
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
