@@ -26,7 +26,8 @@ namespace BugTracker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(DataUtility.GetConnectionString(Configuration)));
+                options.UseNpgsql(DataUtility.GetConnectionString(Configuration),
+                    o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -36,7 +37,7 @@ namespace BugTracker
                 .AddDefaultTokenProviders();
 
             services.AddScoped<ICompanyInfoService, CompanyInfoService>();
-            services.AddScoped<IFileService, FileService>(); 
+            services.AddScoped<IFileService, FileService>();
             services.AddScoped<IEmailSender, EmailService>();
             services.AddScoped<IInviteService, InviteService>();
             services.AddScoped<INotificationService, NotificationService>();
