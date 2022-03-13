@@ -34,15 +34,15 @@ namespace BugTracker
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<IRolesService, RolesService>();
             services.AddScoped<ICompanyInfoService, CompanyInfoService>();
-            services.AddScoped<IProjectService, ProjectService>();
-            services.AddScoped<ITicketService, TicketService>();
-            services.AddScoped<ITicketHistoryService, TicketHistoryService>();
-            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IFileService, FileService>();services.AddScoped<IEmailSender, EmailService>();
             services.AddScoped<IInviteService, InviteService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<IRolesService, RolesService>();
+            services.AddScoped<ITicketHistoryService, TicketHistoryService>(); 
+            services.AddScoped<ITicketService, TicketService>();
 
-            services.AddScoped<IEmailSender, EmailService>();
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
             services.AddControllersWithViews();
