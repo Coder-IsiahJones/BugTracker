@@ -1,6 +1,6 @@
 ﻿namespace BugTracker.Enums
 {
-    public enum TicketPrioity
+    public enum ProjectPriorityEnum
     {
         Low,
         Medium,

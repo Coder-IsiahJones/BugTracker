@@ -1,6 +1,6 @@
 ﻿namespace BugTracker.Enums
 {
-    public enum TicketStatus
+    public enum TicketStatusEnum
     {
         New,
         Development,

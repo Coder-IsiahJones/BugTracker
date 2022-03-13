@@ -97,9 +97,9 @@ namespace BugTracker.Services.Interfaces
 
         public async Task<List<User>> GetAllProjectMembersExceptPMAsync(int projectId)
         {
-            List<User> developers = await GetProjectMembersByRoleAsync(projectId, Roles.Developer.ToString());
-            List<User> submitters = await GetProjectMembersByRoleAsync(projectId, Roles.Submitter.ToString());
-            List<User> admins = await GetProjectMembersByRoleAsync(projectId, Roles.Admin.ToString());
+            List<User> developers = await GetProjectMembersByRoleAsync(projectId, RolesEnum.Developer.ToString());
+            List<User> submitters = await GetProjectMembersByRoleAsync(projectId, RolesEnum.Submitter.ToString());
+            List<User> admins = await GetProjectMembersByRoleAsync(projectId, RolesEnum.Admin.ToString());
 
             List<User> teamMembers = developers.Concat(submitters).Concat(admins).ToList();
 
@@ -172,7 +172,7 @@ namespace BugTracker.Services.Interfaces
 
             foreach (User member in project?.Members)
             {
-                if (await _rolesService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
+                if (await _rolesService.IsUserInRoleAsync(member, RolesEnum.ProjectManager.ToString()))
                 {
                     return member;
                 }
@@ -274,7 +274,7 @@ namespace BugTracker.Services.Interfaces
             {
                 foreach (User member in project?.Members)
                 {
-                    if (await _rolesService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
+                    if (await _rolesService.IsUserInRoleAsync(member, RolesEnum.ProjectManager.ToString()))
                     {
                         await RemoveUserFromProjectAsync(member.Id, projectId);
                     }

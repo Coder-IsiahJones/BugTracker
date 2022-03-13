@@ -299,19 +299,19 @@ namespace BugTracker.Services
 
             try
             {
-                if (role == Roles.Admin.ToString())
+                if (role == RolesEnum.Admin.ToString())
                 {
                     tickets = await GetAllTicketsByCompanyAsync(companyId);
                 }
-                else if (role == Roles.Developer.ToString())
+                else if (role == RolesEnum.Developer.ToString())
                 {
                     tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(x => x.DeveloperUserId == userId).ToList();
                 }
-                else if (role == Roles.Submitter.ToString())
+                else if (role == RolesEnum.Submitter.ToString())
                 {
                     tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(x => x.OwnerUserId == userId).ToList();
                 }
-                else if (role == Roles.ProjectManager.ToString())
+                else if (role == RolesEnum.ProjectManager.ToString())
                 {
                     tickets = await GetTicketsByUserIdAsync(userId, companyId);
                 }
@@ -331,27 +331,27 @@ namespace BugTracker.Services
 
             try
             {
-                if (await _rolesService.IsUserInRoleAsync(user, Roles.Admin.ToString()))
+                if (await _rolesService.IsUserInRoleAsync(user, RolesEnum.Admin.ToString()))
                 {
                     tickets = (await _projectService.GetAllProjectsByCompany(companyId))
                                                     .SelectMany(x => x.Tickets)
                                                     .ToList();
                 }
-                else if (await _rolesService.IsUserInRoleAsync(user, Roles.Developer.ToString()))
+                else if (await _rolesService.IsUserInRoleAsync(user, RolesEnum.Developer.ToString()))
                 {
                     tickets = (await _projectService.GetAllProjectsByCompany(companyId))
                                                     .SelectMany(x => x.Tickets)
                                                     .Where(x => x.DeveloperUserId == userId)
                                                     .ToList();
                 }
-                else if (await _rolesService.IsUserInRoleAsync(user, Roles.Submitter.ToString()))
+                else if (await _rolesService.IsUserInRoleAsync(user, RolesEnum.Submitter.ToString()))
                 {
                     tickets = (await _projectService.GetAllProjectsByCompany(companyId))
                                                     .SelectMany(x => x.Tickets)
                                                     .Where(x => x.OwnerUserId == userId)
                                                     .ToList();
                 }
-                else if (await _rolesService.IsUserInRoleAsync(user, Roles.ProjectManager.ToString()))
+                else if (await _rolesService.IsUserInRoleAsync(user, RolesEnum.ProjectManager.ToString()))
                 {
                     tickets = (await _projectService.GetUserProjectsAsync(userId)).SelectMany(x => x.Tickets).ToList();
                 }

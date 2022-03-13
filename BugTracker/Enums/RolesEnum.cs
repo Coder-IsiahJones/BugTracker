@@ -1,6 +1,6 @@
 ﻿namespace BugTracker.Enums
 {
-    public enum Roles
+    public enum RolesEnum
     {
         Admin,
         ProjectManager,
