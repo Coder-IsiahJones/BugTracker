@@ -28,6 +28,16 @@ namespace BugTracker.Models
         [DisplayName("Invitee")]
         public string InvitteId { get; set; }
 
+        [DisplayName("Invitee Email")]
+        public string InviteeEmail { get; set; }
+
+        [DisplayName("Invitee First Name")]
+        public string InviteeFirstName { get; set; }
+
+
+        [DisplayName("Invitee Last Name")]
+        public string InviteeLastName { get; set; }
+
         public bool IsValid { get; set; }
 
         // Navigation properties
