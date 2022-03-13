@@ -35,7 +35,8 @@ namespace BugTracker
                 .AddDefaultTokenProviders();
 
             services.AddScoped<ICompanyInfoService, CompanyInfoService>();
-            services.AddScoped<IFileService, FileService>(); services.AddScoped<IEmailSender, EmailService>();
+            services.AddScoped<IFileService, FileService>(); 
+            services.AddScoped<IEmailSender, EmailService>();
             services.AddScoped<IInviteService, InviteService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IProjectService, ProjectService>();

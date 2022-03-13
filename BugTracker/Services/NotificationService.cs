@@ -13,9 +13,9 @@ namespace BugTracker.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
-        private readonly RolesService _rolesService;
+        private readonly IRolesService _rolesService;
 
-        public NotificationService(ApplicationDbContext context, IEmailSender emailSender, RolesService rolesService)
+        public NotificationService(ApplicationDbContext context, IEmailSender emailSender, IRolesService rolesService)
         {
             _context = context;
             _emailSender = emailSender;

@@ -15,10 +15,10 @@ namespace BugTracker.Services
     public class TicketService : ITicketService
     {
         private readonly ApplicationDbContext _context;
-        private readonly RolesService _rolesService;
-        private readonly ProjectService _projectService;
+        private readonly IRolesService _rolesService;
+        private readonly IProjectService _projectService;
 
-        public TicketService(ApplicationDbContext context, RolesService rolesService, ProjectService projectService)
+        public TicketService(ApplicationDbContext context, IRolesService rolesService, IProjectService projectService)
         {
             _context = context;
             _rolesService = rolesService;

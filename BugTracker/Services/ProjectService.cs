@@ -12,9 +12,9 @@ namespace BugTracker.Services.Interfaces
     public class ProjectService : IProjectService
     {
         private readonly ApplicationDbContext _context;
-        private readonly RolesService _rolesService;
+        private readonly IRolesService _rolesService;
 
-        public ProjectService(ApplicationDbContext context, RolesService rolesService)
+        public ProjectService(ApplicationDbContext context, IRolesService rolesService)
         {
             _context = context;
             _rolesService = rolesService;
