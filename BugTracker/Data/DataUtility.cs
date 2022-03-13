@@ -10,16 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ProjectPriority = BugTracker.Models.ProjectPriority;
-using ProjectPriorityEnum = BugTracker.Enums.TicketPriority;
-using TicketPriority = BugTracker.Models.TicketPriority;
-
-using TicketPriorityEnum = BugTracker.Enums.TicketPriority;
-
-using TicketStatus = BugTracker.Models.TicketStatus;
-using TicketStatusEnum = BugTracker.Enums.TicketStatus;
-using TicketType = BugTracker.Models.TicketType;
-using TicketTypeEnum = BugTracker.Enums.TicketType;
 
 namespace BugTracker.Data
 {
@@ -90,11 +80,11 @@ namespace BugTracker.Data
         public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             //Seed Roles
-            await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Roles.ProjectManager.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Roles.Developer.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Roles.Submitter.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Roles.DemoUser.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(RolesEnum.Admin.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(RolesEnum.ProjectManager.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(RolesEnum.Developer.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(RolesEnum.Submitter.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(RolesEnum.DemoUser.ToString()));
         }
 
         public static async Task SeedDefaultCompaniesAsync(ApplicationDbContext context)
@@ -244,8 +234,8 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Admin.ToString());
                 }
             }
             catch (Exception ex)
@@ -272,8 +262,8 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Admin.ToString());
                 }
             }
             catch (Exception ex)
@@ -300,8 +290,8 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.ProjectManager.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.ProjectManager.ToString());
                 }
             }
             catch (Exception ex)
@@ -328,8 +318,8 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.ProjectManager.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.ProjectManager.ToString());
                 }
             }
             catch (Exception ex)
@@ -356,8 +346,8 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Developer.ToString());
                 }
             }
             catch (Exception ex)
@@ -384,8 +374,8 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Developer.ToString());
                 }
             }
             catch (Exception ex)
@@ -412,8 +402,8 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Developer.ToString());
                 }
             }
             catch (Exception ex)
@@ -440,8 +430,8 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Developer.ToString());
                 }
             }
             catch (Exception ex)
@@ -468,8 +458,8 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Developer.ToString());
                 }
             }
             catch (Exception ex)
@@ -496,8 +486,8 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Developer.ToString());
                 }
             }
             catch (Exception ex)
@@ -524,8 +514,8 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Submitter.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Submitter.ToString());
                 }
             }
             catch (Exception ex)
@@ -552,8 +542,8 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Submitter.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Submitter.ToString());
                 }
             }
             catch (Exception ex)
@@ -583,9 +573,9 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
-                    await userManager.AddToRoleAsync(defaultUser, Roles.DemoUser.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Admin.ToString());
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.DemoUser.ToString());
                 }
             }
             catch (Exception ex)
@@ -612,9 +602,9 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.ProjectManager.ToString());
-                    await userManager.AddToRoleAsync(defaultUser, Roles.DemoUser.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.ProjectManager.ToString());
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.DemoUser.ToString());
                 }
             }
             catch (Exception ex)
@@ -641,9 +631,9 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
-                    await userManager.AddToRoleAsync(defaultUser, Roles.DemoUser.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Developer.ToString());
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.DemoUser.ToString());
                 }
             }
             catch (Exception ex)
@@ -670,9 +660,9 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Submitter.ToString());
-                    await userManager.AddToRoleAsync(defaultUser, Roles.DemoUser.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Submitter.ToString());
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.DemoUser.ToString());
                 }
             }
             catch (Exception ex)
@@ -699,9 +689,9 @@ namespace BugTracker.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Abc&123!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Submitter.ToString());
-                    await userManager.AddToRoleAsync(defaultUser, Roles.DemoUser.ToString());
+                    await userManager.CreateAsync(defaultUser, "Ruoff1234!");
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.Submitter.ToString());
+                    await userManager.AddToRoleAsync(defaultUser, RolesEnum.DemoUser.ToString());
                 }
             }
             catch (Exception ex)
