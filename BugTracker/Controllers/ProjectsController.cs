@@ -20,9 +20,10 @@ namespace BugTracker.Controllers
         private readonly ILookupService _lookupService;
         private readonly IFileService _fileService;
         private readonly IProjectService _projectService;
+        private readonly ICompanyInfoService _companyInfoService;
         private readonly UserManager<User> _userManager;
 
-        public ProjectsController(ApplicationDbContext context, IRolesService roleService, ILookupService lookupService, IFileService fileService, IProjectService projectService, UserManager<User> userManager)
+        public ProjectsController(ApplicationDbContext context, IRolesService roleService, ILookupService lookupService, IFileService fileService, IProjectService projectService, UserManager<User> userManager, ICompanyInfoService companyInfoService)
         {
             _context = context;
             _roleService = roleService;
@@ -30,6 +31,7 @@ namespace BugTracker.Controllers
             _fileService = fileService;
             _projectService = projectService;
             _userManager = userManager;
+            _companyInfoService = companyInfoService;
         }
 
         public async Task<IActionResult> Index()
@@ -44,6 +46,24 @@ namespace BugTracker.Controllers
             string userId = _userManager.GetUserId(User);
 
             List<Project> projects = await _projectService.GetUserProjectsAsync(userId);
+
+            return View(projects);
+        }
+
+        public async Task<IActionResult> AllProjects()
+        {
+            List<Project> projects =  new();
+
+            int companyId = User.Identity.GetCompanyId().Value;
+
+            if (User.IsInRole(nameof(RolesEnum.Admin)) || User.IsInRole(nameof(RolesEnum.ProjectManager)))
+            {
+                projects = await _companyInfoService.GetAllProjectsAsync(companyId);
+            }
+            else
+            {
+                projects = await _projectService.GetAllProjectsByCompany(companyId);
+            }
 
             return View(projects);
         }
