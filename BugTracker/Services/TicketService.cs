@@ -78,6 +78,7 @@ namespace BugTracker.Services
             }
         }
 
+        #region Get All Tickets By Company
         public async Task<List<Ticket>> GetAllTicketsByCompanyAsync(int companyId)
         {
             try
@@ -102,6 +103,7 @@ namespace BugTracker.Services
                 throw;
             }
         }
+        #endregion
 
         public async Task<List<Ticket>> GetAllTicketsByPriorityAsync(int companyId, string priorityName)
         {

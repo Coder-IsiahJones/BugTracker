@@ -347,6 +347,29 @@ namespace BugTracker.Services.Interfaces
 
         #endregion Get User Projects
 
+        #region Is Assigned Project Manager
+        public async Task<bool> IsAssignedProjectManagerAsync(string userId, int projectId)
+        {
+            try
+            {
+                string projectManagerId = (await GetProjectManagerAsync(projectId))?.Id;
+
+                if (projectManagerId == userId)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        #endregion
+
         #region Get Users Not On Project
 
         public async Task<List<User>> GetUsersNotOnProjectAsync(int projectId, int companyId)

@@ -62,6 +62,24 @@ namespace BugTracker.Controllers
         }
         #endregion
 
+        #region AllTickets
+        public async Task<IActionResult> AllTickets()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+
+            List<Ticket> tickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
+
+            if (User.IsInRole(nameof(RolesEnum.Developer)) || User.IsInRole(nameof(RolesEnum.Submitter)))
+            {
+                return View(tickets.Where(x => x.Archived == false));
+            }
+            else
+            {
+                return View(tickets);
+            }
+        }
+        #endregion
+
         #region Details Get
 
         public async Task<IActionResult> Details(int? id)
