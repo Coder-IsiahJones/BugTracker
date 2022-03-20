@@ -8,7 +8,7 @@ namespace BugTracker.Services.Factories
 {
     public class UserClaimsPrincipleFactory : UserClaimsPrincipalFactory<User, IdentityRole>
     {
-        public UserClaimsPrincipleFactory(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IOptions<IdentityOptions> options) 
+        public UserClaimsPrincipleFactory(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IOptions<IdentityOptions> options)
             : base(userManager, roleManager, options)
         {
         }

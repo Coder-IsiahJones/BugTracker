@@ -11,6 +11,5 @@ namespace BugTracker.Models.ViewModels
         public string PMId { get; set; }
 
         public SelectList PriorityList { get; set; }
-
     }
 }

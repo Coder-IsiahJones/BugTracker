@@ -48,7 +48,6 @@ namespace BugTracker.Services.Interfaces
             }
             catch (System.Exception)
             {
-
                 throw;
             }
         }
