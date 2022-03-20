@@ -34,12 +34,15 @@ namespace BugTracker.Controllers
         }
         #endregion
 
+        #region Index Get
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Tickets.Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
             return View(await applicationDbContext.ToListAsync());
         }
+        #endregion
 
+        #region Details Get
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -61,7 +64,9 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
+        #endregion
 
+        #region Create Get
         public async Task<IActionResult> Create()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -82,7 +87,9 @@ namespace BugTracker.Controllers
 
             return View();
         }
+        #endregion
 
+        #region Create Post
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,ProjectId,TicketTypeId,TicketPriorityId")] Ticket ticket)
@@ -116,7 +123,9 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
+        #endregion
 
+        #region Edit Get
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -137,7 +146,9 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
+        #endregion
 
+        #region Edit Post
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Created,Updated,Archived,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,DeveloperUserId")] Ticket ticket)
@@ -177,21 +188,18 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
+        #endregion
 
-        public async Task<IActionResult> Delete(int? id)
+        #region Archive Get
+        public async Task<IActionResult> Archive(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .Include(t => t.OwnerUser)
-                .Include(t => t.Project)
-                .Include(t => t.TicketPriority)
-                .Include(t => t.TicketStatus)
-                .Include(t => t.TicketType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var ticket = await _ticketService.GetTicketByIdAsync(id.Value);
+
             if (ticket == null)
             {
                 return NotFound();
@@ -199,22 +207,66 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
+        #endregion
 
-        [HttpPost, ActionName("Delete")]
+        #region ArchiveConfirmed Post
+        [HttpPost, ActionName("Archive")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> ArchiveConfirmed(int id)
         {
-            var ticket = await _context.Tickets.FindAsync(id);
-            _context.Tickets.Remove(ticket);
-            await _context.SaveChangesAsync();
+            var ticket = await _ticketService.GetTicketByIdAsync(id);
+
+            ticket.Archived = true;
+            ticket.Updated = DateTimeOffset.Now;
+
+            await _ticketService.UpdateTicketAsync(ticket);
+
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
+        #region Restore Get
+        public async Task<IActionResult> Restore(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var ticket = await _ticketService.GetTicketByIdAsync(id.Value);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            return View(ticket);
+        }
+        #endregion
+
+        #region RestoreConfirmed Post
+        [HttpPost, ActionName("Restore")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RestoreConfirmed(int id)
+        {
+            var ticket = await _ticketService.GetTicketByIdAsync(id);
+
+            ticket.Archived = false;
+            ticket.Updated = DateTimeOffset.Now;
+
+            await _ticketService.UpdateTicketAsync(ticket);
+
+            return RedirectToAction(nameof(Index));
+        }
+        #endregion
+
+        #region Ticket Exists
         private async Task<bool> TicketExists(int id)
         {
             int companyId = User.Identity.GetCompanyId().Value;
             
             return (await _ticketService.GetAllTicketsByCompanyAsync(companyId)).Any(x => x.Id == id);
         }
+        #endregion
     }
 }

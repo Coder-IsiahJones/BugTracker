@@ -260,17 +260,25 @@ namespace BugTracker.Services
             }
         }
 
+        #region Get Ticket By Id 
         public async Task<Ticket> GetTicketByIdAsync(int ticketId)
         {
             try
             {
-                return await _context.Tickets.FirstOrDefaultAsync(x => x.Id == ticketId);
+                return await _context.Tickets.Include(x => x.DeveloperUser)
+                                             .Include(x => x.OwnerUser)
+                                             .Include(x => x.Project)
+                                             .Include(x => x.TicketPriority)
+                                             .Include(x => x.TicketStatus)
+                                             .Include(x => x.TicketType)
+                                             .FirstOrDefaultAsync(x => x.Id == ticketId);
             }
             catch (System.Exception)
             {
                 throw;
             }
         }
+        #endregion
 
         public async Task<User> GetTicketDeveloperAsync(int ticketId, int companyId)
         {
