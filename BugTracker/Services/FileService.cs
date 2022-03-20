@@ -10,6 +10,7 @@ namespace BugTracker.Services
     {
         private readonly string[] suffixes = { "Bytes", "KB", "MB", "GB", "TB", "PB" };
 
+        #region ConvertByteArrayToFile
         public string ConvertByteArrayToFile(byte[] fileData, string extension)
         {
             try
@@ -23,7 +24,9 @@ namespace BugTracker.Services
                 throw;
             }
         }
+        #endregion
 
+        #region ConvertFileToByteArrayAsync
         public async Task<byte[]> ConvertFileToByteArrayAsync(IFormFile file)
         {
             try
@@ -42,33 +45,42 @@ namespace BugTracker.Services
                 throw;
             }
         }
+        #endregion
 
+        #region FormatFileSize
         public string FormatFileSize(long bytes)
         {
             int counter = 0;
-            decimal fileSize = bytes;
-
-            while (Math.Round(fileSize / 1024) >= 1)
+            decimal number = bytes;
+            while (Math.Round(number / 1024) >= 1)
             {
-                fileSize /= bytes;
+                number /= 1024;
                 counter++;
             }
-
-            return string.Format("{0:n1}{1}", fileSize, suffixes[counter]);
+            return string.Format("{0:n1}{1}", number, suffixes[counter]);
         }
+        #endregion
+
+        #region GetFileIcon
+        //public string GetFileIcon(string file)
+        //{
+        //    string fileImage = "default";
+
+        //    if (!string.IsNullOrWhiteSpace(file))
+        //    {
+        //        fileImage = Path.GetExtension(file).Replace(".", "");
+
+        //        return $"/img/png/{fileImage}.png";
+        //    }
+
+        //    return fileImage;
+        //}
 
         public string GetFileIcon(string file)
         {
-            string fileImage = "default";
-
-            if (!string.IsNullOrWhiteSpace(file))
-            {
-                fileImage = Path.GetExtension(file).Replace(".", "");
-
-                return $"/img/png/{fileImage}.png";
-            }
-
-            return fileImage;
+            string ext = Path.GetExtension(file).Replace(".", "");
+            return $"/img/contentType/{ext}.png";
         }
+        #endregion
     }
 }

@@ -44,6 +44,12 @@ namespace BugTracker.Services.Interfaces
 
         public Task<int?> LookupTicketStatusIdAsync(string statusName);
 
+        public Task AddTicketCommentAsync(TicketComment ticketComment);
+
+        public Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId);
+
+        public Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment);
+
         public Task<int?> LookupTicketTypeIdAsync(string typeName);
     }
 }

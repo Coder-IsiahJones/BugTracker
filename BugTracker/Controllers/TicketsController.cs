@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,18 +28,20 @@ namespace BugTracker.Controllers
         private readonly IProjectService _projectService;
         private readonly ILookupService _lookupService;
         private readonly ITicketService _ticketService;
+        private readonly IFileService _fileService;
 
         #endregion Properties
 
         #region Constructor
 
-        public TicketsController(ApplicationDbContext context, UserManager<User> userManager, IProjectService projectService, ILookupService lookupService, ITicketService ticketService)
+        public TicketsController(ApplicationDbContext context, UserManager<User> userManager, IProjectService projectService, ILookupService lookupService, ITicketService ticketService, IFileService fileService)
         {
             _context = context;
             _userManager = userManager;
             _projectService = projectService;
             _lookupService = lookupService;
             _ticketService = ticketService;
+            _fileService = fileService;
         }
 
         #endregion Constructor
@@ -108,13 +111,8 @@ namespace BugTracker.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .Include(t => t.OwnerUser)
-                .Include(t => t.Project)
-                .Include(t => t.TicketPriority)
-                .Include(t => t.TicketStatus)
-                .Include(t => t.TicketType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var ticket = await _ticketService.GetTicketByIdAsync(id.Value);
+
             if (ticket == null)
             {
                 return NotFound();
@@ -256,6 +254,74 @@ namespace BugTracker.Controllers
         }
 
         #endregion Edit Post
+
+        #region Add Ticket Comment
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTicketComment([Bind("Id,TicketId,Comment")] TicketComment ticketComment)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ticketComment.UserId = _userManager.GetUserId(User);
+                    ticketComment.Created = DateTimeOffset.Now;
+
+                    await _ticketService.AddTicketCommentAsync(ticketComment);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToAction("Details", new { id = ticketComment.Id });
+        }
+
+        #endregion
+
+        #region Add Ticket Attachment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTicketAttachment([Bind("Id,FormFile,Description,TicketId")] TicketAttachment ticketAttachment)
+        {
+            string statusMessage;
+
+            if (ModelState.IsValid && ticketAttachment.FormFile != null)
+            {
+                ticketAttachment.FileData = await _fileService.ConvertFileToByteArrayAsync(ticketAttachment.FormFile);
+                ticketAttachment.FileName = ticketAttachment.FormFile.FileName;
+                ticketAttachment.FileContentType = ticketAttachment.FormFile.ContentType;
+
+                ticketAttachment.Created = DateTimeOffset.Now;
+                ticketAttachment.UserId = _userManager.GetUserId(User);
+
+                await _ticketService.AddTicketAttachmentAsync(ticketAttachment);
+                statusMessage = "Success: New attachment added to Ticket.";
+            }
+            else
+            {
+                statusMessage = "Error: Invalid data.";
+
+            }
+
+            return RedirectToAction("Details", new { id = ticketAttachment.TicketId, message = statusMessage });
+        }
+        #endregion
+
+        #region Show File
+        public async Task<IActionResult> ShowFile(int id)
+        {
+            TicketAttachment ticketAttachment = await _ticketService.GetTicketAttachmentByIdAsync(id);
+            string fileName = ticketAttachment.FileName;
+            byte[] fileData = ticketAttachment.FileData;
+            string ext = Path.GetExtension(fileName).Replace(".", "");
+
+            Response.Headers.Add("Content-Disposition", $"inline; filename={fileName}");
+            return File(fileData, $"application/{ext}");
+        }
+        #endregion
 
         #region Archive Get
 
