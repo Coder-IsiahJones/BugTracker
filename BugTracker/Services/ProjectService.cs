@@ -11,8 +11,14 @@ namespace BugTracker.Services.Interfaces
 {
     public class ProjectService : IProjectService
     {
+        #region Properties
+
         private readonly ApplicationDbContext _context;
         private readonly IRolesService _rolesService;
+
+        #endregion Properties
+
+        #region Constructor
 
         public ProjectService(ApplicationDbContext context, IRolesService rolesService)
         {
@@ -20,11 +26,19 @@ namespace BugTracker.Services.Interfaces
             _rolesService = rolesService;
         }
 
+        #endregion Constructor
+
+        #region Add New Project
+
         public async Task AddNewProjectAsync(Project project)
         {
             _context.Add(project);
             await _context.SaveChangesAsync();
         }
+
+        #endregion Add New Project
+
+        #region Add Project Manager
 
         public async Task<bool> AddProjectManagerAsync(string userId, int projectId)
         {
@@ -54,6 +68,10 @@ namespace BugTracker.Services.Interfaces
                 return false;
             }
         }
+
+        #endregion Add Project Manager
+
+        #region Add User To Project
 
         public async Task<bool> AddUserToProjectAsync(string userId, int projectId)
         {
@@ -87,6 +105,10 @@ namespace BugTracker.Services.Interfaces
             }
         }
 
+        #endregion Add User To Project
+
+        #region Archive Project
+
         public async Task ArchiveProjectAsync(Project project)
         {
             try
@@ -109,6 +131,10 @@ namespace BugTracker.Services.Interfaces
             }
         }
 
+        #endregion Archive Project
+
+        #region Get All Project Members Except Project Manager
+
         public async Task<List<User>> GetAllProjectMembersExceptPMAsync(int projectId)
         {
             List<User> developers = await GetProjectMembersByRoleAsync(projectId, RolesEnum.Developer.ToString());
@@ -119,6 +145,10 @@ namespace BugTracker.Services.Interfaces
 
             return teamMembers;
         }
+
+        #endregion Get All Project Members Except Project Manager
+
+        #region Get All Projects By Company
 
         public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
         {
@@ -148,6 +178,10 @@ namespace BugTracker.Services.Interfaces
             return projects;
         }
 
+        #endregion Get All Projects By Company
+
+        #region Get All Projects By Priority
+
         public async Task<List<Project>> GetAllProjectsByPriority(int companyId, string priorityName)
         {
             List<Project> projects = await GetAllProjectsByCompany(companyId);
@@ -157,6 +191,10 @@ namespace BugTracker.Services.Interfaces
             return projects.Where(x => x.ProjectPriorityId == priorityId).ToList();
         }
 
+        #endregion Get All Projects By Priority
+
+        #region Get Archived Projects By Company
+
         public async Task<List<Project>> GetArchivedProjectsByCompany(int companyId)
         {
             List<Project> projects = await GetAllProjectsByCompany(companyId);
@@ -164,10 +202,18 @@ namespace BugTracker.Services.Interfaces
             return projects.Where(x => x.Archived == true).ToList();
         }
 
+        #endregion Get Archived Projects By Company
+
+        #region Get Developers On Project
+
         public Task<List<User>> GetDevelopersOnProjectAsync(int projectId)
         {
             throw new System.NotImplementedException();
         }
+
+        #endregion Get Developers On Project
+
+        #region Get Project By Id
 
         public async Task<Project> GetProjectByIdAsync(int projectId, int companyId)
         {
@@ -178,6 +224,10 @@ namespace BugTracker.Services.Interfaces
 
             return project;
         }
+
+        #endregion Get Project By Id
+
+        #region Get Project Manager
 
         public async Task<User> GetProjectManagerAsync(int projectId)
         {
@@ -194,6 +244,10 @@ namespace BugTracker.Services.Interfaces
 
             return null;
         }
+
+        #endregion Get Project Manager
+
+        #region Get Project Members By Role
 
         public async Task<List<User>> GetProjectMembersByRoleAsync(int projectId, string role)
         {
@@ -213,10 +267,18 @@ namespace BugTracker.Services.Interfaces
             return members;
         }
 
+        #endregion Get Project Members By Role
+
+        #region Get Submitters On Project
+
         public Task<List<User>> GetSubmittersOnProjectAsync(int projectId)
         {
             throw new System.NotImplementedException();
         }
+
+        #endregion Get Submitters On Project
+
+        #region Get User Projects
 
         public async Task<List<Project>> GetUserProjectsAsync(string userId)
         {
@@ -253,12 +315,20 @@ namespace BugTracker.Services.Interfaces
             }
         }
 
+        #endregion Get User Projects
+
+        #region Get Users Not On Project
+
         public async Task<List<User>> GetUsersNotOnProjectAsync(int projectId, int companyId)
         {
             List<User> users = await _context.Users.Where(x => x.Projects.All(x => x.Id != projectId)).ToListAsync();
 
             return users.Where(x => x.CompanyId == companyId).ToList();
         }
+
+        #endregion Get Users Not On Project
+
+        #region Is User On Project
 
         public async Task<bool> IsUserOnProjectAsync(string userId, int projectId)
         {
@@ -274,10 +344,18 @@ namespace BugTracker.Services.Interfaces
             return result;
         }
 
+        #endregion Is User On Project
+
+        #region Lookup Project Priority Id
+
         public async Task<int> LookupProjectPriorityId(string priorityName)
         {
             return (await _context.ProjectPriorities.FirstOrDefaultAsync(x => x.Name == priorityName)).Id;
         }
+
+        #endregion Lookup Project Priority Id
+
+        #region Remove Project Manager
 
         public async Task RemoveProjectManagerAsync(int projectId)
         {
@@ -299,6 +377,10 @@ namespace BugTracker.Services.Interfaces
                 throw;
             }
         }
+
+        #endregion Remove Project Manager
+
+        #region Remove User From Project
 
         public async Task RemoveUserFromProjectAsync(string userId, int projectId)
         {
@@ -327,6 +409,10 @@ namespace BugTracker.Services.Interfaces
             }
         }
 
+        #endregion Remove User From Project
+
+        #region Remove Users From Project By Role
+
         public async Task RemoveUsersFromProjectByRoleAsync(string role, int projectId)
         {
             try
@@ -354,6 +440,10 @@ namespace BugTracker.Services.Interfaces
             }
         }
 
+        #endregion Remove Users From Project By Role
+
+        #region Restore Project
+
         public async Task RestoreProjectAsync(Project project)
         {
             try
@@ -376,10 +466,16 @@ namespace BugTracker.Services.Interfaces
             }
         }
 
+        #endregion Restore Project
+
+        #region Update Project
+
         public async Task UpdateProjectAsync(Project project)
         {
             _context.Update(project);
             await _context.SaveChangesAsync();
         }
+
+        #endregion Update Project
     }
 }

@@ -1,11 +1,14 @@
 ﻿using BugTracker.Data;
 using BugTracker.Enums;
 using BugTracker.Extensions;
+using BugTracker.Models;
 using BugTracker.Models.ViewModels;
 using BugTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BugTracker.Controllers
@@ -17,17 +20,18 @@ namespace BugTracker.Controllers
         private readonly ILookupService _lookupService;
         private readonly IFileService _fileService;
         private readonly IProjectService _projectService;
+        private readonly UserManager<User> _userManager;
 
-        public ProjectsController(ApplicationDbContext context, IRolesService roleService, ILookupService lookupService, IFileService fileService, IProjectService projectService)
+        public ProjectsController(ApplicationDbContext context, IRolesService roleService, ILookupService lookupService, IFileService fileService, IProjectService projectService, UserManager<User> userManager)
         {
             _context = context;
             _roleService = roleService;
             _lookupService = lookupService;
             _fileService = fileService;
             _projectService = projectService;
+            _userManager = userManager;
         }
 
-        // GET: Projects
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Projects.Include(p => p.Company).Include(p => p.ProjectPriority);
@@ -35,7 +39,15 @@ namespace BugTracker.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Projects/Details/5
+        public async Task<IActionResult> MyProjects()
+        {
+            string userId = _userManager.GetUserId(User);
+
+            List<Project> projects = await _projectService.GetUserProjectsAsync(userId);
+
+            return View(projects);
+        }
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -55,7 +67,6 @@ namespace BugTracker.Controllers
             return View(project);
         }
 
-        // GET: Projects/Create
         public async Task<IActionResult> Create()
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -68,7 +79,6 @@ namespace BugTracker.Controllers
             return View(model);
         }
 
-        // POST: Projects/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AddProjectWithPMViewModel model)
