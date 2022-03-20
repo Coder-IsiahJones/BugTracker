@@ -533,6 +533,25 @@ namespace BugTracker.Services
         }
         #endregion
 
+        #region Get Unassigned Tickets
+        public async Task<List<Ticket>> GetUnassignedTicketsAsync(int companyId)
+        {
+            List<Ticket> tickets = new();
+
+            try
+            {
+                tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(x => string.IsNullOrEmpty(x.DeveloperUserId))
+                                                                        .ToList();
+
+                return tickets;
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+        #endregion
+
         #region Get Ticket Attachment By Id
         public async Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId)
         {

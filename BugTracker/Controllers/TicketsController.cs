@@ -5,6 +5,7 @@ using BugTracker.Enums;
 using BugTracker.Extensions;
 using BugTracker.Models;
 using BugTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -343,6 +344,37 @@ namespace BugTracker.Controllers
         }
 
         #endregion Archive Get
+
+        #region UnassignedTickets Get
+        [Authorize(Roles="Admin,ProjectManager")]
+        public async Task<IActionResult> UnassignedTickets(int? id)
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            string userId = _userManager.GetUserId(User);
+
+            List<Ticket> tickets = await _ticketService.GetUnassignedTicketsAsync(companyId);
+
+            if (User.IsInRole(nameof(RolesEnum.Admin)))
+            {
+                return View(tickets);
+            }
+            else
+            {
+                List<Ticket> pmTickets = new();
+
+                foreach (Ticket ticket in tickets)
+                {
+                    if (await _projectService.IsAssignedProjectManagerAsync(userId, ticket.ProjectId))
+                    {
+                        pmTickets.Add(ticket);
+                    }
+                }
+
+                return View(pmTickets);
+            }
+        }
+
+        #endregion UnassignedTickets Get
 
         #region ArchiveConfirmed Post
 
