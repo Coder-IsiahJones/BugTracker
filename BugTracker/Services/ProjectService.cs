@@ -236,10 +236,20 @@ namespace BugTracker.Services.Interfaces
 
         public async Task<Project> GetProjectByIdAsync(int projectId, int companyId)
         {
-            Project project = await _context.Projects.Include(x => x.Tickets)
-                                                     .Include(x => x.Members)
-                                                     .Include(x => x.ProjectPriority)
-                                                     .FirstOrDefaultAsync(x => x.Id == projectId && x.CompanyId == companyId);
+            Project project = await _context.Projects
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.TicketPriority)
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.TicketStatus)
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.TicketType)
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.DeveloperUser)
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.OwnerUser)
+                                            .Include(x => x.Members)
+                                            .Include(x => x.ProjectPriority)
+                                            .FirstOrDefaultAsync(x => x.Id == projectId && x.CompanyId == companyId);
 
             return project;
         }
