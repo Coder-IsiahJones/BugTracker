@@ -1,4 +1,5 @@
 ﻿@model BugTracker.Models.ViewModels.AddProjectWithPMViewModel
+@using BugTracker.Enums
 
 @{
     ViewData["Title"] = "Create";
@@ -39,18 +40,19 @@
 
             <div class="form-group">
                 <label class="control-label">Choose a priority</label>
-                <select asp-for="ProjectPriority" class ="form-control" asp-items="@Model.PriorityList"></select>
+                <select asp-for="Project.ProjectPriorityId" class="form-control" asp-items="@Model.PriorityList"></select>
             </div>
 
             <div class="form-group">
                 <label class="control-label">Project Image</label>
                 <input asp-for="Project.ImageFormFile" class="form-control" type="file" accept=".png,.jpg,.jpeg,.gif"
-                    onchange="document.getElementById('fileData').src = window.URL.createObjectURL(this.files[0])" />
+                       onchange="document.getElementById('fileData').src = window.URL.createObjectURL(this.files[0])" />
                 <span asp-validation-for="Project.ImageFormFile" class="text-danger"></span>
             </div>
 
             <label> Image Preview </label>
-            @if (Model.Project?.FileData != null){
+            @if (Model.Project?.FileData != null)
+            {
                 <img id="fileData" class="img-fluid img-thumbnail" style="width:100px; height:80px" src="data:image/*base64,@(Convert.ToBase64String(Model.Project.FileData))" />
             }
             else
@@ -58,12 +60,15 @@
                 <img id="fileData" class="img-fluid img-thumbnail" style="width:100px; height:80px" src="" />
             }
 
-             <div class="form-group">
-                <label class="control-label"> Project Manager </label>
-                <select asp-for="PMId" class ="form-control" asp-items="@Model.PMList">
-                    <option></option>
-                </select>
-            </div>
+            @if (User.IsInRole(RolesEnum.Admin.ToString()))
+            {
+                <div class="form-group">
+                    <label class="control-label"> Project Manager </label>
+                    <select asp-for="PMId" class="form-control" asp-items="@Model.PMList">
+                        <option></option>
+                    </select>
+                </div>
+            }
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -77,5 +82,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }
