@@ -1,13 +1,11 @@
 ﻿using BugTracker.Data;
 using BugTracker.Enums;
 using BugTracker.Extensions;
-using BugTracker.Models;
 using BugTracker.Models.ViewModels;
 using BugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BugTracker.Controllers
@@ -97,18 +95,16 @@ namespace BugTracker.Controllers
                     {
                         await _projectService.AddProjectManagerAsync(model.PMId, model.Project.Id);
                     }
-
                 }
                 catch (System.Exception)
                 {
-
                     throw;
                 }
 
                 // TODO: Redirect to All Projects
                 return RedirectToAction("Index");
             }
-            
+
             return RedirectToAction("Create");
         }
 
@@ -153,7 +149,6 @@ namespace BugTracker.Controllers
                 }
                 catch (System.Exception)
                 {
-
                     throw;
                 }
             }
@@ -162,17 +157,16 @@ namespace BugTracker.Controllers
         }
 
         // GET: Projects/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Archive(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var project = await _context.Projects
-                .Include(p => p.Company)
-                .Include(p => p.ProjectPriority)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            int companyId = User.Identity.GetCompanyId().Value;
+            var project = await _projectService.GetProjectByIdAsync(id.Value, companyId);
+
             if (project == null)
             {
                 return NotFound();
@@ -182,19 +176,24 @@ namespace BugTracker.Controllers
         }
 
         // POST: Projects/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Archive")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> ArchiveConfirmed(int id)
         {
-            var project = await _context.Projects.FindAsync(id);
-            _context.Projects.Remove(project);
-            await _context.SaveChangesAsync();
+            int companyId = User.Identity.GetCompanyId().Value;
+            var project = await _projectService.GetProjectByIdAsync(id, companyId);
+
+            await _projectService.ArchiveProjectAsync(project);
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProjectExists(int id)
         {
-            return _context.Projects.Any(e => e.Id == id);
+            int companyId = User.Identity.GetCompanyId().Value;
+            var project = _projectService.GetProjectByIdAsync(id, companyId);
+
+            return project != null ? true : false;
         }
     }
 }
