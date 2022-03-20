@@ -89,10 +89,24 @@ namespace BugTracker.Services.Interfaces
 
         public async Task ArchiveProjectAsync(Project project)
         {
-            project.Archived = true;
+            try
+            {
+                project.Archived = true;
 
-            _context.Update(project);
-            await _context.SaveChangesAsync();
+                await UpdateProjectAsync(project);
+
+                foreach (Ticket ticket in project.Tickets)
+                {
+                    ticket.ArchivedByProject = true;
+
+                    _context.Update(ticket);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<List<User>> GetAllProjectMembersExceptPMAsync(int projectId)
@@ -336,6 +350,28 @@ namespace BugTracker.Services.Interfaces
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                throw;
+            }
+        }
+
+        public async Task RestoreProjectAsync(Project project)
+        {
+            try
+            {
+                project.Archived = false;
+
+                await UpdateProjectAsync(project);
+
+                foreach (Ticket ticket in project.Tickets)
+                {
+                    ticket.ArchivedByProject = false;
+
+                    _context.Update(ticket);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }
