@@ -333,20 +333,20 @@ namespace BugTracker.Services
             {
                 if (await _rolesService.IsUserInRoleAsync(user, RolesEnum.Admin.ToString()))
                 {
-                    tickets = (await _projectService.GetAllProjectsByCompany(companyId))
+                    tickets = (await _projectService.GetAllProjectsByCompanyAsync(companyId))
                                                     .SelectMany(x => x.Tickets)
                                                     .ToList();
                 }
                 else if (await _rolesService.IsUserInRoleAsync(user, RolesEnum.Developer.ToString()))
                 {
-                    tickets = (await _projectService.GetAllProjectsByCompany(companyId))
+                    tickets = (await _projectService.GetAllProjectsByCompanyAsync(companyId))
                                                     .SelectMany(x => x.Tickets)
                                                     .Where(x => x.DeveloperUserId == userId)
                                                     .ToList();
                 }
                 else if (await _rolesService.IsUserInRoleAsync(user, RolesEnum.Submitter.ToString()))
                 {
-                    tickets = (await _projectService.GetAllProjectsByCompany(companyId))
+                    tickets = (await _projectService.GetAllProjectsByCompanyAsync(companyId))
                                                     .SelectMany(x => x.Tickets)
                                                     .Where(x => x.OwnerUserId == userId)
                                                     .ToList();

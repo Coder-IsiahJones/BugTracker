@@ -150,7 +150,7 @@ namespace BugTracker.Services.Interfaces
 
         #region Get All Projects By Company
 
-        public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
+        public async Task<List<Project>> GetAllProjectsByCompanyAsync(int companyId)
         {
             List<Project> projects = new();
 
@@ -184,7 +184,7 @@ namespace BugTracker.Services.Interfaces
 
         public async Task<List<Project>> GetAllProjectsByPriority(int companyId, string priorityName)
         {
-            List<Project> projects = await GetAllProjectsByCompany(companyId);
+            List<Project> projects = await GetAllProjectsByCompanyAsync(companyId);
 
             int priorityId = await LookupProjectPriorityId(priorityName);
 

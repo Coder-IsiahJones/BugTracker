@@ -9,18 +9,32 @@ namespace BugTracker.Services
 {
     public class LookupService : ILookupService
     {
+        #region Properties
         private readonly ApplicationDbContext _context;
+        #endregion
 
+        #region Constructor
         public LookupService(ApplicationDbContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Get All Ticket Statuses
         public async Task<List<TicketStatus>> GetAllTicketStatusesAsync()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                return await _context.TicketStatuses.ToListAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
+        #endregion
 
+        #region Get Project Priorities
         public async Task<List<ProjectPriority>> GetProjectPrioritiesAsync()
         {
             try
@@ -32,15 +46,34 @@ namespace BugTracker.Services
                 throw;
             }
         }
+        #endregion
 
-        public Task<List<TicketPriority>> GetTicketPrioritiesAsync()
+        #region Get Ticket Priorities
+        public async Task<List<TicketPriority>> GetTicketPrioritiesAsync()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                return await _context.TicketPriorities.ToListAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
+        #endregion
 
-        public Task<List<TicketType>> GetTicketTypesAsync()
+        #region Get Ticket Types
+        public async Task<List<TicketType>> GetTicketTypesAsync()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                return await _context.TicketTypes.ToListAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
+        #endregion
     }
 }
