@@ -1,4 +1,5 @@
-﻿using BugTracker.Data;
+﻿#region Using
+using BugTracker.Data;
 using BugTracker.Enums;
 using BugTracker.Extensions;
 using BugTracker.Models;
@@ -8,8 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+#endregion
 
 namespace BugTracker.Controllers
 {
@@ -47,6 +50,17 @@ namespace BugTracker.Controllers
         }
 
         #endregion Index Get
+
+        #region MyTickets
+        public async Task<IActionResult> MyTickets()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            List<Ticket> tickets = await _ticketService.GetTicketsByUserIdAsync(user.Id, user.CompanyId);
+
+            return View(tickets);
+        }
+        #endregion
 
         #region Details Get
 

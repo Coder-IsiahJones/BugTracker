@@ -149,7 +149,6 @@ namespace BugTracker.Services.Interfaces
         #endregion Get All Project Members Except Project Manager
 
         #region Get All Projects By Company
-
         public async Task<List<Project>> GetAllProjectsByCompanyAsync(int companyId)
         {
             List<Project> projects = new();
@@ -170,6 +169,8 @@ namespace BugTracker.Services.Interfaces
                                                 .ThenInclude(x => x.OwnerUser)
                                             .Include(x => x.Tickets)
                                                 .ThenInclude(x => x.TicketPriority)
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.TicketStatus)
                                             .Include(x => x.Tickets)
                                                 .ThenInclude(x => x.TicketType)
                                             .Include(x => x.ProjectPriority)
