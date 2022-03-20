@@ -264,11 +264,14 @@ namespace BugTracker.Services.Interfaces
             Project project = await _context.Projects.Include(x => x.Members)
                                                      .FirstOrDefaultAsync(x => x.Id == projectId);
 
-            foreach (User member in project?.Members)
+            if (project != null)
             {
-                if (await _rolesService.IsUserInRoleAsync(member, RolesEnum.ProjectManager.ToString()))
+                foreach (User member in project?.Members)
                 {
-                    return member;
+                    if (await _rolesService.IsUserInRoleAsync(member, RolesEnum.ProjectManager.ToString()))
+                    {
+                        return member;
+                    }
                 }
             }
 
