@@ -16,14 +16,17 @@ namespace BugTracker.Controllers
     public class TicketsController : Controller
     {
         #region Properties
+
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly IProjectService _projectService;
         private readonly ILookupService _lookupService;
         private readonly ITicketService _ticketService;
-        #endregion
+
+        #endregion Properties
 
         #region Constructor
+
         public TicketsController(ApplicationDbContext context, UserManager<User> userManager, IProjectService projectService, ILookupService lookupService, ITicketService ticketService)
         {
             _context = context;
@@ -32,17 +35,21 @@ namespace BugTracker.Controllers
             _lookupService = lookupService;
             _ticketService = ticketService;
         }
-        #endregion
+
+        #endregion Constructor
 
         #region Index Get
+
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Tickets.Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
             return View(await applicationDbContext.ToListAsync());
         }
-        #endregion
+
+        #endregion Index Get
 
         #region Details Get
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -64,9 +71,11 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
-        #endregion
+
+        #endregion Details Get
 
         #region Create Get
+
         public async Task<IActionResult> Create()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -87,9 +96,11 @@ namespace BugTracker.Controllers
 
             return View();
         }
-        #endregion
+
+        #endregion Create Get
 
         #region Create Post
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,ProjectId,TicketTypeId,TicketPriorityId")] Ticket ticket)
@@ -123,9 +134,11 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
-        #endregion
+
+        #endregion Create Post
 
         #region Edit Get
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -146,9 +159,11 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
-        #endregion
+
+        #endregion Edit Get
 
         #region Edit Post
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Created,Updated,Archived,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,DeveloperUserId")] Ticket ticket)
@@ -164,7 +179,7 @@ namespace BugTracker.Controllers
                 try
                 {
                     ticket.Updated = DateTimeOffset.Now;
-                    
+
                     await _ticketService.UpdateTicketAsync(ticket);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -188,9 +203,11 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
-        #endregion
+
+        #endregion Edit Post
 
         #region Archive Get
+
         public async Task<IActionResult> Archive(int? id)
         {
             if (id == null)
@@ -207,9 +224,11 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
-        #endregion
+
+        #endregion Archive Get
 
         #region ArchiveConfirmed Post
+
         [HttpPost, ActionName("Archive")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ArchiveConfirmed(int id)
@@ -223,9 +242,11 @@ namespace BugTracker.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-        #endregion
+
+        #endregion ArchiveConfirmed Post
 
         #region Restore Get
+
         public async Task<IActionResult> Restore(int? id)
         {
             if (id == null)
@@ -242,9 +263,11 @@ namespace BugTracker.Controllers
 
             return View(ticket);
         }
-        #endregion
+
+        #endregion Restore Get
 
         #region RestoreConfirmed Post
+
         [HttpPost, ActionName("Restore")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RestoreConfirmed(int id)
@@ -258,15 +281,18 @@ namespace BugTracker.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-        #endregion
+
+        #endregion RestoreConfirmed Post
 
         #region Ticket Exists
+
         private async Task<bool> TicketExists(int id)
         {
             int companyId = User.Identity.GetCompanyId().Value;
-            
+
             return (await _ticketService.GetAllTicketsByCompanyAsync(companyId)).Any(x => x.Id == id);
         }
-        #endregion
+
+        #endregion Ticket Exists
     }
 }
