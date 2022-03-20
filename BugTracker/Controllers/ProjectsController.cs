@@ -68,6 +68,15 @@ namespace BugTracker.Controllers
             return View(projects);
         }
 
+        public async Task<IActionResult> ArchivedProjects()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+
+            List<Project> projects = await _projectService.GetArchivedProjectsByCompany(companyId);
+
+            return View(projects);
+        }
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

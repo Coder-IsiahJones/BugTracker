@@ -197,9 +197,28 @@ namespace BugTracker.Services.Interfaces
 
         public async Task<List<Project>> GetArchivedProjectsByCompany(int companyId)
         {
-            List<Project> projects = await GetAllProjectsByCompany(companyId);
+            List<Project> projects = await _context.Projects.Where(x => x.CompanyId == companyId && x.Archived == true)
+                                            .Include(x => x.Members)
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.Comments)
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.Attachments)
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.History)
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.Notifications)
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.DeveloperUser)
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.OwnerUser)
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.TicketPriority)
+                                            .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.TicketType)
+                                            .Include(x => x.ProjectPriority)
+                                            .ToListAsync();
 
-            return projects.Where(x => x.Archived == true).ToList();
+            return projects;
         }
 
         #endregion Get Archived Projects By Company
