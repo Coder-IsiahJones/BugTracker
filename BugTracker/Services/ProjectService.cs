@@ -532,6 +532,38 @@ namespace BugTracker.Services.Interfaces
             await _context.SaveChangesAsync();
         }
 
+
         #endregion Update Project
+
+        #region Get Unassigned Projects
+        public async Task<List<Project>> GetUnassignedProjectsAsync(int companyId)
+        {
+            List<Project> result = new();
+            List<Project> projects = new();
+
+            try
+            {
+                projects = await _context.Projects.Include(x => x.ProjectPriority)
+                                                  .Where(x => x.CompanyId == companyId)
+                                                  .ToListAsync();
+
+                foreach (Project project in projects)
+                {
+                    if ((await GetProjectMembersByRoleAsync(project.Id, nameof(RolesEnum.ProjectManager))).Count == 0)
+                    {
+                        result.Add(project);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return result;
+        }
+
+        #endregion
     }
 }

@@ -4,6 +4,7 @@ using BugTracker.Data;
 using BugTracker.Enums;
 using BugTracker.Extensions;
 using BugTracker.Models;
+using BugTracker.Models.ViewModels;
 using BugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -346,7 +347,7 @@ namespace BugTracker.Controllers
         #endregion Archive Get
 
         #region UnassignedTickets Get
-        [Authorize(Roles="Admin,ProjectManager")]
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> UnassignedTickets(int? id)
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -375,6 +376,33 @@ namespace BugTracker.Controllers
         }
 
         #endregion UnassignedTickets Get
+
+        #region Assign Developer Get
+        [HttpGet]
+        public async Task<IActionResult> AssignDeveloper(int id)
+        {
+            AssignedDeveloperViewModel model = new();
+
+            model.Ticket = await _ticketService.GetTicketByIdAsync(id);
+            model.Developers = new SelectList(await _projectService.GetProjectMembersByRoleAsync(model.Ticket.ProjectId, nameof(RolesEnum.Developer)),"Id", "FullName");
+
+            return View(model);
+        }
+        #endregion
+
+        #region Assign Developer Post 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignDeveloper(AssignedDeveloperViewModel model)
+        {
+            if (model.DeveloperId != null)
+            {
+                await _ticketService.AssignTicketAsync(model.Ticket.Id, model.DeveloperId);
+            }
+
+            return RedirectToAction(nameof(AssignDeveloper), new { id = model.Ticket.Id });
+        }
+        #endregion
 
         #region ArchiveConfirmed Post
 
