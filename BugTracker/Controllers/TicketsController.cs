@@ -1,6 +1,5 @@
 ﻿#region Using
 
-using BugTracker.Data;
 using BugTracker.Enums;
 using BugTracker.Extensions;
 using BugTracker.Models;
@@ -21,6 +20,7 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class TicketsController : Controller
     {
         #region Properties
@@ -342,6 +342,7 @@ namespace BugTracker.Controllers
 
         #region Archive Get
 
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> Archive(int? id)
         {
             if (id == null)
@@ -396,6 +397,7 @@ namespace BugTracker.Controllers
         #region Assign Developer Get
 
         [HttpGet]
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> AssignDeveloper(int id)
         {
             AssignedDeveloperViewModel model = new();
@@ -412,6 +414,7 @@ namespace BugTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> AssignDeveloper(AssignedDeveloperViewModel model)
         {
             if (model.DeveloperId != null)
@@ -459,6 +462,7 @@ namespace BugTracker.Controllers
 
         #region Restore Get
 
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> Restore(int? id)
         {
             if (id == null)
@@ -482,6 +486,7 @@ namespace BugTracker.Controllers
 
         [HttpPost, ActionName("Restore")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> RestoreConfirmed(int id)
         {
             var ticket = await _ticketService.GetTicketByIdAsync(id);
