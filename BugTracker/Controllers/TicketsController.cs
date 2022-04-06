@@ -31,12 +31,13 @@ namespace BugTracker.Controllers
         private readonly ILookupService _lookupService;
         private readonly ITicketService _ticketService;
         private readonly IFileService _fileService;
+        private readonly ITicketHistoryService _historyService;
 
         #endregion Properties
 
         #region Constructor
 
-        public TicketsController(ApplicationDbContext context, UserManager<User> userManager, IProjectService projectService, ILookupService lookupService, ITicketService ticketService, IFileService fileService)
+        public TicketsController(ApplicationDbContext context, UserManager<User> userManager, IProjectService projectService, ILookupService lookupService, ITicketService ticketService, IFileService fileService, ITicketHistoryService historyService)
         {
             _context = context;
             _userManager = userManager;
@@ -44,6 +45,7 @@ namespace BugTracker.Controllers
             _lookupService = lookupService;
             _ticketService = ticketService;
             _fileService = fileService;
+            _historyService = historyService;
         }
 
         #endregion Constructor
@@ -227,6 +229,8 @@ namespace BugTracker.Controllers
             if (ModelState.IsValid)
             {
                 User user = await _userManager.GetUserAsync(User);
+                Ticket oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
+
                 try
                 {
                     ticket.Updated = DateTimeOffset.Now;
@@ -244,6 +248,9 @@ namespace BugTracker.Controllers
                         throw;
                     }
                 }
+
+                Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
+                await _historyService.AddHistoryAsync(oldTicket, newTicket, user.Id);
 
                 return RedirectToAction(nameof(Index));
             }
