@@ -25,7 +25,6 @@ namespace BugTracker.Controllers
     {
         #region Properties
 
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly IProjectService _projectService;
         private readonly ILookupService _lookupService;
@@ -37,9 +36,8 @@ namespace BugTracker.Controllers
 
         #region Constructor
 
-        public TicketsController(ApplicationDbContext context, UserManager<User> userManager, IProjectService projectService, ILookupService lookupService, ITicketService ticketService, IFileService fileService, ITicketHistoryService historyService)
+        public TicketsController(UserManager<User> userManager, IProjectService projectService, ILookupService lookupService, ITicketService ticketService, IFileService fileService, ITicketHistoryService historyService)
         {
-            _context = context;
             _userManager = userManager;
             _projectService = projectService;
             _lookupService = lookupService;
@@ -49,16 +47,6 @@ namespace BugTracker.Controllers
         }
 
         #endregion Constructor
-
-        #region Index Get
-
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Tickets.Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            return View(await applicationDbContext.ToListAsync());
-        }
-
-        #endregion Index Get
 
         #region MyTickets
 
