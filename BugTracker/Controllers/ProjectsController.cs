@@ -4,6 +4,7 @@ using BugTracker.Extensions;
 using BugTracker.Models;
 using BugTracker.Models.ViewModels;
 using BugTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private readonly IRolesService _roleService;
@@ -69,6 +71,7 @@ namespace BugTracker.Controllers
             return View(projects);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UnassignedProjects()
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -81,6 +84,7 @@ namespace BugTracker.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignPM(int projectId)
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -95,6 +99,7 @@ namespace BugTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignPM(AssignProjectManagerViewModel model)
         {
             if (!string.IsNullOrEmpty(model.ProjectManagerId))
@@ -108,6 +113,7 @@ namespace BugTracker.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> AssignMembers(int id)
         {
             ProjectMembersViewModel model = new();
@@ -129,6 +135,7 @@ namespace BugTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> AssignMembers(ProjectMembersViewModel model)
         {
             if (model.SelectedUsers != null)
@@ -172,6 +179,7 @@ namespace BugTracker.Controllers
             return View(project);
         }
 
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> Create()
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -186,6 +194,7 @@ namespace BugTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> Create(AddProjectWithPMViewModel model)
         {
             if (model != null)
@@ -223,6 +232,7 @@ namespace BugTracker.Controllers
             return RedirectToAction("Create");
         }
 
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> Edit(int? id)
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -239,6 +249,7 @@ namespace BugTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> Edit(AddProjectWithPMViewModel model)
         {
             if (model != null)
@@ -278,6 +289,7 @@ namespace BugTracker.Controllers
             return RedirectToAction("Edit");
         }
 
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> Archive(int? id)
         {
             if (id == null)
@@ -298,6 +310,7 @@ namespace BugTracker.Controllers
 
         [HttpPost, ActionName("Archive")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> ArchiveConfirmed(int id)
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -308,6 +321,7 @@ namespace BugTracker.Controllers
             return RedirectToAction(nameof(AllProjects));
         }
 
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> Restore(int? id)
         {
             if (id == null)
@@ -328,6 +342,7 @@ namespace BugTracker.Controllers
 
         [HttpPost, ActionName("Restore")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> RestoreConfirmed(int id)
         {
             int companyId = User.Identity.GetCompanyId().Value;
