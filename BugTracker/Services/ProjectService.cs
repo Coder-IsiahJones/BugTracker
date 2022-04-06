@@ -149,6 +149,7 @@ namespace BugTracker.Services.Interfaces
         #endregion Get All Project Members Except Project Manager
 
         #region Get All Projects By Company
+
         public async Task<List<Project>> GetAllProjectsByCompanyAsync(int companyId)
         {
             List<Project> projects = new();
@@ -351,6 +352,7 @@ namespace BugTracker.Services.Interfaces
         #endregion Get User Projects
 
         #region Is Assigned Project Manager
+
         public async Task<bool> IsAssignedProjectManagerAsync(string userId, int projectId)
         {
             try
@@ -371,7 +373,8 @@ namespace BugTracker.Services.Interfaces
                 throw;
             }
         }
-        #endregion
+
+        #endregion Is Assigned Project Manager
 
         #region Get Users Not On Project
 
@@ -532,10 +535,10 @@ namespace BugTracker.Services.Interfaces
             await _context.SaveChangesAsync();
         }
 
-
         #endregion Update Project
 
         #region Get Unassigned Projects
+
         public async Task<List<Project>> GetUnassignedProjectsAsync(int companyId)
         {
             List<Project> result = new();
@@ -557,13 +560,12 @@ namespace BugTracker.Services.Interfaces
             }
             catch (Exception)
             {
-
                 throw;
             }
 
             return result;
         }
 
-        #endregion
+        #endregion Get Unassigned Projects
     }
 }

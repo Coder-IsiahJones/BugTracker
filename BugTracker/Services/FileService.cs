@@ -11,6 +11,7 @@ namespace BugTracker.Services
         private readonly string[] suffixes = { "Bytes", "KB", "MB", "GB", "TB", "PB" };
 
         #region ConvertByteArrayToFile
+
         public string ConvertByteArrayToFile(byte[] fileData, string extension)
         {
             try
@@ -24,9 +25,11 @@ namespace BugTracker.Services
                 throw;
             }
         }
-        #endregion
+
+        #endregion ConvertByteArrayToFile
 
         #region ConvertFileToByteArrayAsync
+
         public async Task<byte[]> ConvertFileToByteArrayAsync(IFormFile file)
         {
             try
@@ -45,9 +48,11 @@ namespace BugTracker.Services
                 throw;
             }
         }
-        #endregion
+
+        #endregion ConvertFileToByteArrayAsync
 
         #region FormatFileSize
+
         public string FormatFileSize(long bytes)
         {
             int counter = 0;
@@ -59,9 +64,11 @@ namespace BugTracker.Services
             }
             return string.Format("{0:n1}{1}", number, suffixes[counter]);
         }
-        #endregion
+
+        #endregion FormatFileSize
 
         #region GetFileIcon
+
         //public string GetFileIcon(string file)
         //{
         //    string fileImage = "default";
@@ -81,6 +88,7 @@ namespace BugTracker.Services
             string ext = Path.GetExtension(file).Replace(".", "");
             return $"/img/contentType/{ext}.png";
         }
-        #endregion
+
+        #endregion GetFileIcon
     }
 }

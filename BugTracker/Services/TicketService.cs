@@ -518,6 +518,7 @@ namespace BugTracker.Services
         #endregion Add Ticket Comment
 
         #region Add Ticket Attachment
+
         public async Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
         {
             try
@@ -527,13 +528,14 @@ namespace BugTracker.Services
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
-        #endregion
+
+        #endregion Add Ticket Attachment
 
         #region Get Unassigned Tickets
+
         public async Task<List<Ticket>> GetUnassignedTicketsAsync(int companyId)
         {
             List<Ticket> tickets = new();
@@ -550,9 +552,11 @@ namespace BugTracker.Services
                 throw;
             }
         }
-        #endregion
+
+        #endregion Get Unassigned Tickets
 
         #region Get Ticket Attachment By Id
+
         public async Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId)
         {
             try
@@ -564,11 +568,11 @@ namespace BugTracker.Services
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
-        #endregion
+
+        #endregion Get Ticket Attachment By Id
 
         #region Update Ticket
 
@@ -588,6 +592,7 @@ namespace BugTracker.Services
         #endregion Update Ticket
 
         #region Get Ticket AsNoTracking Async
+
         public async Task<Ticket> GetTicketAsNoTrackingAsync(int ticketId)
         {
             try
@@ -602,10 +607,10 @@ namespace BugTracker.Services
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
-        #endregion
+
+        #endregion Get Ticket AsNoTracking Async
     }
 }

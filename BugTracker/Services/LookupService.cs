@@ -10,17 +10,22 @@ namespace BugTracker.Services
     public class LookupService : ILookupService
     {
         #region Properties
+
         private readonly ApplicationDbContext _context;
-        #endregion
+
+        #endregion Properties
 
         #region Constructor
+
         public LookupService(ApplicationDbContext context)
         {
             _context = context;
         }
-        #endregion
+
+        #endregion Constructor
 
         #region Get All Ticket Statuses
+
         public async Task<List<TicketStatus>> GetAllTicketStatusesAsync()
         {
             try
@@ -32,9 +37,11 @@ namespace BugTracker.Services
                 throw;
             }
         }
-        #endregion
+
+        #endregion Get All Ticket Statuses
 
         #region Get Project Priorities
+
         public async Task<List<ProjectPriority>> GetProjectPrioritiesAsync()
         {
             try
@@ -46,9 +53,11 @@ namespace BugTracker.Services
                 throw;
             }
         }
-        #endregion
+
+        #endregion Get Project Priorities
 
         #region Get Ticket Priorities
+
         public async Task<List<TicketPriority>> GetTicketPrioritiesAsync()
         {
             try
@@ -60,9 +69,11 @@ namespace BugTracker.Services
                 throw;
             }
         }
-        #endregion
+
+        #endregion Get Ticket Priorities
 
         #region Get Ticket Types
+
         public async Task<List<TicketType>> GetTicketTypesAsync()
         {
             try
@@ -74,6 +85,7 @@ namespace BugTracker.Services
                 throw;
             }
         }
-        #endregion
+
+        #endregion Get Ticket Types
     }
 }

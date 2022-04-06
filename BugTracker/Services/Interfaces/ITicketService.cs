@@ -53,7 +53,7 @@ namespace BugTracker.Services.Interfaces
         public Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment);
 
         public Task<int?> LookupTicketTypeIdAsync(string typeName);
-        
+
         public Task<Ticket> GetTicketAsNoTrackingAsync(int ticketId);
     }
 }

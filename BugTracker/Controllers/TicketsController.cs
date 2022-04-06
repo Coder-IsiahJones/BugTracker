@@ -175,7 +175,6 @@ namespace BugTracker.Controllers
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
 
@@ -301,6 +300,7 @@ namespace BugTracker.Controllers
         #endregion
 
         #region Add Ticket Attachment
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTicketAttachment([Bind("Id,FormFile,Description,TicketId")] TicketAttachment ticketAttachment)
@@ -323,7 +323,6 @@ namespace BugTracker.Controllers
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
                 statusMessage = "Success: New attachment added to Ticket.";
@@ -331,14 +330,15 @@ namespace BugTracker.Controllers
             else
             {
                 statusMessage = "Error: Invalid data.";
-
             }
 
             return RedirectToAction("Details", new { id = ticketAttachment.TicketId, message = statusMessage });
         }
+
         #endregion
 
         #region Show File
+
         public async Task<IActionResult> ShowFile(int id)
         {
             TicketAttachment ticketAttachment = await _ticketService.GetTicketAttachmentByIdAsync(id);
@@ -349,6 +349,7 @@ namespace BugTracker.Controllers
             Response.Headers.Add("Content-Disposition", $"inline; filename={fileName}");
             return File(fileData, $"application/{ext}");
         }
+
         #endregion
 
         #region Archive Get
@@ -373,6 +374,7 @@ namespace BugTracker.Controllers
         #endregion Archive Get
 
         #region UnassignedTickets Get
+
         [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> UnassignedTickets(int? id)
         {
@@ -404,19 +406,22 @@ namespace BugTracker.Controllers
         #endregion UnassignedTickets Get
 
         #region Assign Developer Get
+
         [HttpGet]
         public async Task<IActionResult> AssignDeveloper(int id)
         {
             AssignedDeveloperViewModel model = new();
 
             model.Ticket = await _ticketService.GetTicketByIdAsync(id);
-            model.Developers = new SelectList(await _projectService.GetProjectMembersByRoleAsync(model.Ticket.ProjectId, nameof(RolesEnum.Developer)),"Id", "FullName");
+            model.Developers = new SelectList(await _projectService.GetProjectMembersByRoleAsync(model.Ticket.ProjectId, nameof(RolesEnum.Developer)), "Id", "FullName");
 
             return View(model);
         }
+
         #endregion
 
-        #region Assign Developer Post 
+        #region Assign Developer Post
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignDeveloper(AssignedDeveloperViewModel model)
@@ -432,7 +437,6 @@ namespace BugTracker.Controllers
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
 
@@ -444,6 +448,7 @@ namespace BugTracker.Controllers
 
             return RedirectToAction(nameof(AssignDeveloper), new { id = model.Ticket.Id });
         }
+
         #endregion
 
         #region ArchiveConfirmed Post

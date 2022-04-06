@@ -184,7 +184,6 @@ namespace BugTracker.Services
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
