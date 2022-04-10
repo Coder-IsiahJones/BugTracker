@@ -16,7 +16,7 @@ namespace BugTracker.Services.Interfaces
 
         public Task<List<Project>> GetAllProjectsByCompanyAsync(int companyId);
 
-        public Task<List<Project>> GetAllProjectsByPriority(int companyId, string priorityName);
+        public Task<List<Project>> GetAllProjectsByPriorityAsync(int companyId, string priorityName);
 
         public Task<List<User>> GetAllProjectMembersExceptPMAsync(int projectId);
 
