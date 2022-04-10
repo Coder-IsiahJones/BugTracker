@@ -46,6 +46,8 @@ namespace BugTracker.Services.Interfaces
                                             .Include(x => x.Tickets)
                                                 .ThenInclude(x => x.TicketPriority)
                                             .Include(x => x.Tickets)
+                                                .ThenInclude(x => x.TicketStatus)
+                                            .Include(x => x.Tickets)
                                                 .ThenInclude(x => x.TicketType)
                                             .Include(x => x.ProjectPriority)
                                             .ToListAsync();
